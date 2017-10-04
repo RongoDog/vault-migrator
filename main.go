@@ -4,6 +4,8 @@ import (
     log "github.com/mgutz/logxi/v1"
     "github.com/sirupsen/logrus"
     "github.com/hashicorp/vault/physical"
+    "github.com/hashicorp/vault/physical/file"
+    "github.com/hashicorp/vault/physical/consul"
     "github.com/urfave/cli"
     "os"
     "io/ioutil"
@@ -67,11 +69,11 @@ func moveData(path string, from physical.Backend, to physical.Backend) error {
 
 func move(config *Config) error {
     logger := log.New("vault-migrator")
-    from, err := physical.NewBackend(config.From.Name, logger, config.From.Config)
+    from, err := file.NewFileBackend(config.From.Config, logger)
     if err != nil {
         return err
     }
-    to, err := physical.NewBackend(config.To.Name, logger, config.To.Config)
+    to, err := consul.NewConsulBackend(config.To.Config, logger)
     if err != nil {
         return err
     }
