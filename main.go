@@ -14,6 +14,7 @@ import (
     "strings"
     "github.com/robfig/cron"
     "time"
+    "github.com/hashicorp/vault/physical/dynamodb"
 )
 
 //Backend is a supported storage backend by vault
@@ -73,7 +74,7 @@ func move(config *Config) error {
     if err != nil {
         return err
     }
-    to, err := consul.NewConsulBackend(config.To.Config, logger)
+    to, err := dynamodb.NewDynamoDBBackend(config.To.Config, logger)
     if err != nil {
         return err
     }
