@@ -5,7 +5,6 @@ import (
     "github.com/sirupsen/logrus"
     "github.com/hashicorp/vault/physical"
     "github.com/hashicorp/vault/physical/file"
-    "github.com/hashicorp/vault/physical/consul"
     "github.com/urfave/cli"
     "os"
     "io/ioutil"
