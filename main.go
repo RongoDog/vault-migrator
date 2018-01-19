@@ -14,6 +14,7 @@ import (
     "github.com/robfig/cron"
     "time"
     "github.com/hashicorp/vault/physical/dynamodb"
+    "context"
 )
 
 //Backend is a supported storage backend by vault
@@ -35,7 +36,7 @@ type Config struct {
 }
 
 func moveData(path string, from physical.Backend, to physical.Backend) error {
-    keys, err := from.List(path)
+    keys, err := from.List(context.Background(), path)
     if err != nil {
         return err
     }
@@ -48,14 +49,14 @@ func moveData(path string, from physical.Backend, to physical.Backend) error {
             }
             continue
         }
-        entry, err := from.Get(path + key)
+        entry, err := from.Get(context.Background(), path + key)
         if err != nil {
             return err
         }
         if entry == nil {
             continue
         }
-        err = to.Put(entry)
+        err = to.Put(context.Background(), entry)
 
         if err != nil {
             return err
